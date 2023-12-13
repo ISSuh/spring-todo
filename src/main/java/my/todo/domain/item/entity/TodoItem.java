@@ -1,5 +1,6 @@
 package my.todo.domain.item.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,8 +23,10 @@ public class TodoItem extends ModifyTime {
   
   @Id
   @GeneratedValue
+  @Column(name = "item_id")
   private Long id;
 
+  @Column(unique = true)
   private Long number;
 
   @Size(max = 100)
@@ -33,7 +36,7 @@ public class TodoItem extends ModifyTime {
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "user_id")
   private User user;
 
 }

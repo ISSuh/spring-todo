@@ -28,6 +28,7 @@ public class User extends ModifyTime {
 
   @Id
   @GeneratedValue
+  @Column(name = "user_id")
   private Long id;
 
   @Column(unique = true)

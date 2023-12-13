@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import my.todo.domain.item.service.TodoItemService;
 
-@RestController(value = "/api")
+@RestController(value = "/api/todo")
 @RequiredArgsConstructor
 @Slf4j
 public class TodoItemRestController {

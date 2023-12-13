@@ -1,15 +1,14 @@
 package my.todo.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import my.todo.domain.user.service.UserService;
 
-@RestController(value = "/api/user")
+@RestController(value = "/api/sign")
 @RequiredArgsConstructor
-public class UserRestController {
+public class AccountRestController {
   
   private UserService userService;
 
@@ -21,11 +20,6 @@ public class UserRestController {
   @PostMapping("/signin")
   void login() {
 
-  }
-
-  @GetMapping("/{id}")
-  void user() {
-    
   }
 
 }

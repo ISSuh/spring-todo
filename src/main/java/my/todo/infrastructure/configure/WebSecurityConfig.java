@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,7 +27,13 @@ public class WebSecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-  
+
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) -> web.ignoring()
+      .requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+  }
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
      http
@@ -36,33 +43,24 @@ public class WebSecurityConfig {
         headers.frameOptions((options) -> 
           options.sameOrigin()))
       .authorizeHttpRequests((authorizeHttpRequests) ->
-        authorizeHttpRequests
-          .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-          .requestMatchers(new AntPathRequestMatcher( "/home")).permitAll()
-          .requestMatchers(new AntPathRequestMatcher( "/login")).permitAll()
-          .requestMatchers(new AntPathRequestMatcher("/api/user/signup")).permitAll()
-          .requestMatchers(new AntPathRequestMatcher("/api/user/signin")).permitAll()
+        authorizeHttpRequests        
+          .requestMatchers(new AntPathRequestMatcher("/api/sign/**")).permitAll()
+          .requestMatchers(new AntPathRequestMatcher( "/home")).hasRole("USER")
+          .requestMatchers(new AntPathRequestMatcher("/api/todo/**")).hasRole("USER")
           .anyRequest().authenticated())
       .formLogin((formLogin) ->
         formLogin
           .usernameParameter("username")
           .passwordParameter("password")
           .loginPage("/login")
+          .defaultSuccessUrl("/home")
           .permitAll())
         .logout((logout) -> 
           logout
+            .logoutSuccessUrl("/login")
             .permitAll());
 
     return http.build();
   }
-
-
-  // @Bean
-  // public UserDetailsService userDetailsService() {
-  //   UserDetails user =
-  //     User.user
-  // }
-  
-  // public void 
 
 }

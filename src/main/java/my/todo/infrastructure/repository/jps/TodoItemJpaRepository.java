@@ -15,16 +15,14 @@ public interface TodoItemJpaRepository extends JpaRepository<TodoItem, Long>, To
 
   @Query(
     "select new my.todo.domain.item.dto.TodoItemDto(i) " +
-    "from item i " +
-    "where u.id = :id"
-  )
+    "from TodoItem i " +
+    "where i.id = :id")
   Optional<TodoItemDto> findDtoById(Long id);
 
   @Query(
     "select new my.todo.domain.item.dto.TodoItemDto(i) " +
-    "from item i " +
-    "where u.number = :number"
-  )
+    "from TodoItem i " +
+    "where i.number = :number")
   Optional<TodoItemDto> findDtoByNumber(Long number);
 
   default TodoItem saveItem(TodoItem user) {

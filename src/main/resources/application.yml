@@ -32,3 +32,9 @@ logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
+jwt:
+  token:
+    header: X-MY-TODO-AUTH
+    issuer: my-todo
+    secret: secret
+    expired-time: 10

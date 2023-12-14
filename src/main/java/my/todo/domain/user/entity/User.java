@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.todo.domain.base.entity.ModifyTime;
@@ -24,6 +25,7 @@ import my.todo.domain.item.entity.TodoItem;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class User extends ModifyTime {
 
   @Id
@@ -50,5 +52,20 @@ public class User extends ModifyTime {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   List<TodoItem> items = new ArrayList<>();
+
+  public User(
+    Long id,
+    @NotBlank @Size(min = 5, max = 50) String email,
+    @NotBlank @Size(min = 5, max = 20) String username,
+    @NotBlank @Size(min = 1, max = 150) String password,
+    Role role,
+    List<TodoItem> items) {
+    this.id = id;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+    this.items = items;
+  }
 
 }

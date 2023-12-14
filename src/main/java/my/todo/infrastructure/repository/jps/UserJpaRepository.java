@@ -13,6 +13,8 @@ public interface UserJpaRepository extends JpaRepository<User, Long>,  UserRepos
 
   User save(User user);
 
+  Optional<User> findUserById(Long id);
+
   Optional<User> findUserByUsername(String username);
 
   @Query(
@@ -31,6 +33,10 @@ public interface UserJpaRepository extends JpaRepository<User, Long>,  UserRepos
 
   default User saveUser(User user) {
     return save(user);
+  }
+
+  default Optional<User> findUser(Long id) {
+    return findUserById(id);
   }
 
   default Optional<User> findUserByName(String username) {

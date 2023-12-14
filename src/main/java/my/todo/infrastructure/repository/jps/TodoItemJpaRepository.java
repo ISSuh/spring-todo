@@ -13,6 +13,12 @@ public interface TodoItemJpaRepository extends JpaRepository<TodoItem, Long>, To
 
   TodoItem save(TodoItem user);
 
+  void deleteById(Long id);
+
+  Optional<TodoItem> findItemById(Long id);
+
+  Optional<TodoItem> findItemByNumber(Long id);
+
   @Query(
     "select new my.todo.domain.item.dto.TodoItemDto(i) " +
     "from TodoItem i " +
@@ -29,6 +35,18 @@ public interface TodoItemJpaRepository extends JpaRepository<TodoItem, Long>, To
     return save(user);
   }
 
+  default void removeItem(Long id) {
+    deleteById(id);
+  }
+
+  default Optional<TodoItem> findItem(Long id) {
+    return findItemById(id);
+  }
+
+  default Optional<TodoItem> findByNumber(Long number) {
+    return findItemByNumber(number);
+  }
+  
   default Optional<TodoItemDto> findItemDtoById(Long id) {
     return findDtoById(id);
   }

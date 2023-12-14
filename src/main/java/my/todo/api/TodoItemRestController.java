@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import my.todo.domain.item.dto.TodoItemDto;
 import my.todo.domain.item.service.TodoItemService;
 
 @RestController
@@ -18,14 +20,14 @@ import my.todo.domain.item.service.TodoItemService;
 @Slf4j
 public class TodoItemRestController {
   
-  private TodoItemService todoItemService;
+  private final TodoItemService todoItemService;
 
-  @PostMapping("/{userId}/item/{number}")
+  @PostMapping("/{userId}/item")
   void newItem(
     @PathVariable Long userId,
-    @PathVariable Long number) {
-    log.info("[TodoItemRestController][newItem] userId={}, number={}", userId, number);
-    todoItemService.create();
+    @RequestBody TodoItemDto itemDto) {
+    log.info("[TodoItemRestController][newItem] userId={}", userId);
+    todoItemService.create(userId, itemDto);
   }
 
   @GetMapping("/{userId}/item")
@@ -43,18 +45,21 @@ public class TodoItemRestController {
     todoItemService.findItem(userId, number);
   }
 
-  @PatchMapping("/{userId}/item/{number}")
-  void update(
-    @PathVariable Long userId,
-    @PathVariable Long number) {
-    log.info("[TodoItemRestController][update] userId={}, number={}", userId, number);
-  }
-
   @DeleteMapping("/{userId}/item/{number}")
   void remove(
     @PathVariable Long userId,
     @PathVariable Long number) {
     log.info("[TodoItemRestController][remove] userId={}, number={}", userId, number);
+    todoItemService.remove(userId, number);
+  }
+
+  @PatchMapping("/{userId}/item/{number}")
+  TodoItemDto update(
+    @PathVariable Long userId,
+    @PathVariable Long number,
+    @RequestBody TodoItemDto itemDto) {
+    log.info("[TodoItemRestController][update] userId={}, number={}", userId, number);
+    return todoItemService.update(userId, number, itemDto);
   }
 
 }

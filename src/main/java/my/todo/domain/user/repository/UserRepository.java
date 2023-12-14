@@ -9,6 +9,8 @@ public interface UserRepository {
   
   User saveUser(User user);
 
+  Optional<User> findUser(Long id);
+
   Optional<User> findUserByName(String username);
 
   Optional<UserDto> findUserDtoById(Long id);

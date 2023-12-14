@@ -1,7 +1,9 @@
 package my.todo.domain.user.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +11,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapKey;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +33,7 @@ import my.todo.domain.item.entity.TodoItem;
 public class User extends ModifyTime {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
   private Long id;
 
@@ -51,7 +55,13 @@ public class User extends ModifyTime {
   private Role role;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  List<TodoItem> items = new ArrayList<>();
+  @MapKey(name="number")
+  private Map<Long, TodoItem> items = new HashMap<>();
+
+  @Column(name = "item_number_counter")
+  @ColumnDefault("0")
+  @Builder.Default()
+  private Long itemNumberCounter = 0L;
 
   public User(
     Long id,
@@ -59,13 +69,29 @@ public class User extends ModifyTime {
     @NotBlank @Size(min = 5, max = 20) String username,
     @NotBlank @Size(min = 1, max = 150) String password,
     Role role,
-    List<TodoItem> items) {
+    Map<Long, TodoItem> items,
+    Long itemNumberCounter) {
     this.id = id;
     this.email = email;
     this.username = username;
     this.password = password;
     this.role = role;
     this.items = items;
+    this.itemNumberCounter = itemNumberCounter;
+  }
+
+  public void addItem(TodoItem item) {
+    this.items.put(item.getNumber(), item);
+    item.registUser(this);
+  }
+
+  public void removeItem(Long id) {
+    this.items.remove(id);
+  }
+  
+  public Long nextItemNumber() {
+    itemNumberCounter++;
+    return itemNumberCounter;
   }
 
 }

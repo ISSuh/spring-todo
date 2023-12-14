@@ -6,14 +6,15 @@ import my.todo.domain.item.dto.TodoItemDto;
 
 public interface TodoItemService {
   
-  TodoItemDto create();
+  TodoItemDto create(Long userId, TodoItemDto itemDto);
 
   TodoItemDto findItem(Long userId, Long number);
 
   List<TodoItemDto> findItems(Long userId);
 
-  void update(TodoItemDto item);
+  void remove(Long userId, Long number);
 
-  void remove(Long number);
+  TodoItemDto update(Long userId, Long number, TodoItemDto item);
+
 
 }

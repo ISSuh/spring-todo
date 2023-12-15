@@ -13,6 +13,8 @@ public class UserDto {
   
   private Long id;
 
+  private String email;
+
   private String username;
 
   private String role;
@@ -21,6 +23,7 @@ public class UserDto {
 
   public UserDto(User user) {
     this.id = user.getId();
+    this.email = user.getEmail();
     this.username = user.getUsername();
     this.role = user.getRole().toString();
   }

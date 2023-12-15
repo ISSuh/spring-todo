@@ -55,8 +55,9 @@ public class WebSecurityConfig {
       authorizeHttpRequests        
         .requestMatchers(new AntPathRequestMatcher("/api/sign/**")).permitAll()
         .requestMatchers(new AntPathRequestMatcher("/api/todo/**")).hasAnyRole("USER", "ADMIN")
-        .anyRequest().authenticated()
-    )
+        .anyRequest().authenticated())
+    .formLogin((form) ->
+      form.disable())
     .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

@@ -13,10 +13,10 @@ public interface TodoItemRepository {
 
   Optional<TodoItem> findItem(Long id);
 
-  Optional<TodoItem> findByNumber(Long number);
+  Optional<TodoItem> findByNumber(Long userId, Long number);
 
   Optional<TodoItemDto> findItemDtoById(Long id);
 
-  Optional<TodoItemDto> findItemDtoByNumber(Long number);
+  Optional<TodoItemDto> findItemDtoByNumber(Long userId, Long number);
 
 }

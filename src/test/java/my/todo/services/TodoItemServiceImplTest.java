@@ -118,11 +118,11 @@ public class TodoItemServiceImplTest {
 
     // when
     String changeTitle = title + "_changed";
-    String changedescription = description + "_changed";
+    String changeDescription = description + "_changed";
 
     TodoItemDto changeItem = new TodoItemDto();
     changeItem.setTitle(changeTitle);
-    todoItemDto.setDescription(changedescription);
+    changeItem.setDescription(changeDescription);
 
     TodoItemDto dto = todoItemService.update(userId, created.getNumber(), changeItem);
     log.info("[TEST][create] dto={}", dto);
@@ -130,7 +130,30 @@ public class TodoItemServiceImplTest {
     // then
     Assertions.assertThat(dto.getNumber()).isEqualTo(created.getNumber());
     Assertions.assertThat(dto.getTitle()).isEqualTo(changeTitle);
-    Assertions.assertThat(dto.getDescription()).isEqualTo(changedescription);
+    Assertions.assertThat(dto.getDescription()).isEqualTo(changeDescription);
+  }
+
+  @Test
+  public void removeItem() {
+    // given
+    Long userId = 4L;
+    String title = "title";
+    String description = "description";
+
+    TodoItemDto todoItemDto = new TodoItemDto();
+    todoItemDto.setTitle(title);
+    todoItemDto.setDescription(description);
+
+    TodoItemDto created = todoItemService.create(userId, todoItemDto);
+    log.info("[TEST][create] created={}", created);
+
+    // when
+    todoItemService.remove(userId, created.getNumber());
+
+    // then
+    Assertions.assertThatThrownBy(
+      () -> todoItemService.findItem(userId, created.getNumber()))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }

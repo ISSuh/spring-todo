@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto login(SignInDto signIn) {
     String username = signIn.getUsername();
-    String encodedPw = passwordEncoder.encode(signIn.getPassword());
 
     Optional<User> finded = userRepository.findUserByName(username);
     if (finded.isEmpty()) {
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     UserDto dto = new UserDto(user);
-    dto.setToken(jwtTokenProvider.generateToken(username, "USER"));
+    dto.setToken(jwtTokenProvider.generateToken(username, Role.ROLE_USER.name()));
     return dto;
   }
 

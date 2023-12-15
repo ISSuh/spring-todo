@@ -14,7 +14,7 @@ public interface TodoItemService {
 
   void remove(Long userId, Long number);
 
-  TodoItemDto update(Long userId, Long number, TodoItemDto item);
+  TodoItemDto update(Long userId, Long number, TodoItemDto itemDto);
 
 
 }

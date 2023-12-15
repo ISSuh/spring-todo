@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import my.todo.domain.item.dto.TodoItemDto;
 import my.todo.domain.item.entity.TodoItem;
 import my.todo.domain.item.repository.TodoItemRepository;
@@ -17,6 +18,7 @@ import my.todo.domain.user.repository.UserRepository;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class TodoItemServiceImpl implements TodoItemService {
   
   private final TodoItemRepository todoItemRepository;
@@ -70,14 +72,17 @@ public class TodoItemServiceImpl implements TodoItemService {
     }
 
     if (itemDto.getDescription() != null) {
+      log.info("[update] before item={}", item);
       item.updateDescription(itemDto.getDescription());
     }
+
+    log.info("[update] after item={}", item);
 
     return new TodoItemDto(item);
   }
 
   private TodoItem find(Long userId, Long number) {
-    Optional<TodoItem> item = todoItemRepository.findByNumber(number);
+    Optional<TodoItem> item = todoItemRepository.findByNumber(userId, number);
     if (item.isEmpty()) {
       throw new IllegalArgumentException("not found item. " + number);
     }

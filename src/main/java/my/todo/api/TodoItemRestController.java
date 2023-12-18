@@ -23,11 +23,11 @@ public class TodoItemRestController {
   private final TodoItemService todoItemService;
 
   @PostMapping("/{userId}/item")
-  void newItem(
+  TodoItemDto newItem(
     @PathVariable Long userId,
     @RequestBody TodoItemDto itemDto) {
     log.info("[TodoItemRestController][newItem] userId={}", userId);
-    todoItemService.create(userId, itemDto);
+    return todoItemService.create(userId, itemDto);
   }
 
   @GetMapping("/{userId}/item")
@@ -38,11 +38,11 @@ public class TodoItemRestController {
   }
 
   @GetMapping("/{userId}/item/{number}")
-  void item(
+  TodoItemDto item(
     @PathVariable Long userId,
     @PathVariable Long number) {
     log.info("[TodoItemRestController][item] userId={}, number={}", userId, number);
-    todoItemService.findItem(userId, number);
+    return todoItemService.findItem(userId, number);
   }
 
   @DeleteMapping("/{userId}/item/{number}")

@@ -25,7 +25,7 @@ public class UserServiceImplTest {
   @Test
   void signUp() {
     // given
-    String username = "user_1";
+    String username = "user_100";
     String email = username + "@gmail.com";
     String password = username;
 
@@ -97,7 +97,7 @@ public class UserServiceImplTest {
   @Test
   void signIn() {
     // given
-    String username = "user_2";
+    String username = "user_200";
     String email = username + "@gmail.com";
     String password = username;
 
